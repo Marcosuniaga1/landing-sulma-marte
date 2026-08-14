@@ -147,6 +147,7 @@
     }
 
     /* ── Video placeholder ── */
+    /* <!-- REEMPLAZAR: Sustituir todo el div.video-placeholder por el embed real de YouTube o Vimeo --> */
 
     .video-placeholder {
       position: relative;
@@ -404,6 +405,8 @@
       gap: 40px;
       align-items: center;
     }
+
+    /* <!-- REEMPLAZAR: Sustituir el div.bio-photo-placeholder por una etiqueta <img> con la foto real de Sulma --> */
 
     .bio-photo {
       width: 100%;
@@ -776,7 +779,11 @@
   </footer>
 
   <script>
-    var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbysN7dEU2TYODCY2jWUY1uBgfIoovkG9wZk3P_0IemsUNT72eNYsodOlHqbrjr3FZ-80g/exec";
+    // ================================================
+    // CONFIGURACION - REEMPLAZAR ESTAS DOS URLs
+    // ================================================
+
+    var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxtbZqVF7442yrCv82HyC_G3Ry7joHOqi77pszPPAM2EjX8VV6Sm6bz1ocsJxsgOftZuQ/exec";
     var GRACIAS_URL = "https://sulmamarte.com/gracias";
 
     function validateName(value) {
@@ -804,7 +811,7 @@
       }
     }
 
-    function submitToSheets(nombre, correo, whatsapp, onSuccess) {
+    function submitToSheets(nombre, correo, whatsapp, onSuccess, onError) {
       var url = APPS_SCRIPT_URL
         + "?nombre=" + encodeURIComponent(nombre)
         + "&correo=" + encodeURIComponent(correo)
@@ -814,7 +821,7 @@
       img.src = url;
 
       setTimeout(function() {
-        window.location.href = GRACIAS_URL;
+        onSuccess();
       }, 2500);
     }
 
@@ -848,13 +855,23 @@
           return;
         }
 
+        var originalText = submitBtn.textContent;
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="spinner"></span>Enviando...';
 
         submitToSheets(
           nombreInput.value.trim(),
           correoInput.value.trim(),
-          whatsappInput.value.trim()
+          whatsappInput.value.trim(),
+          function() {
+            window.location.href = GRACIAS_URL;
+          },
+          function() {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+            formError.textContent = "Hubo un problema al enviar. Intenta de nuevo.";
+            formError.classList.add("visible");
+          }
         );
       });
 
