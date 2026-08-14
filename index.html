@@ -144,11 +144,36 @@
       z-index: 0;
     }
 
+    .hero-bg-gradient {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(196,36,114,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(196,36,114,0.06) 0%, transparent 50%),
+        linear-gradient(135deg, #0D0D0D 0%, #1A1A1A 40%, #1A0D14 100%);
+    }
+
     .hero-bg-svg {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      position: relative;
     }
+
+    @keyframes node-pulse {
+      0%, 100% { opacity: 0.25; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.4); }
+    }
+
+    .node-pulse {
+      animation: node-pulse 3s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    .network-nodes circle:nth-child(1) { animation-delay: 0s; }
+    .network-nodes circle:nth-child(3) { animation-delay: 0.8s; }
+    .network-nodes circle:nth-child(5) { animation-delay: 1.6s; }
+    .network-nodes circle:nth-child(10) { animation-delay: 0.4s; }
 
     /* ── Section dividers ── */
 
@@ -908,69 +933,151 @@
   <!-- ============================== -->
   <section class="section section--hero">
     <div class="hero-bg-elements" aria-hidden="true">
-      <svg class="hero-bg-svg" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
-        <!-- Nodos de red -->
-        <circle cx="100" cy="150" r="3" fill="#C42472" opacity="0.15"/>
-        <circle cx="250" cy="80" r="2" fill="#C42472" opacity="0.1"/>
-        <circle cx="400" cy="200" r="4" fill="#C42472" opacity="0.12"/>
-        <circle cx="600" cy="60" r="2" fill="#C42472" opacity="0.08"/>
-        <circle cx="800" cy="180" r="3" fill="#C42472" opacity="0.1"/>
-        <circle cx="1000" cy="100" r="2" fill="#C42472" opacity="0.12"/>
-        <circle cx="1100" cy="250" r="4" fill="#C42472" opacity="0.08"/>
-        <circle cx="150" cy="400" r="2" fill="#C42472" opacity="0.1"/>
-        <circle cx="900" cy="350" r="3" fill="#C42472" opacity="0.08"/>
-        <circle cx="700" cy="500" r="2" fill="#C42472" opacity="0.1"/>
-        <!-- Lineas de conexion -->
-        <line x1="100" y1="150" x2="250" y2="80" stroke="#C42472" stroke-width="0.5" opacity="0.08"/>
-        <line x1="250" y1="80" x2="400" y2="200" stroke="#C42472" stroke-width="0.5" opacity="0.06"/>
-        <line x1="400" y1="200" x2="600" y2="60" stroke="#C42472" stroke-width="0.5" opacity="0.08"/>
-        <line x1="600" y1="60" x2="800" y2="180" stroke="#C42472" stroke-width="0.5" opacity="0.06"/>
-        <line x1="800" y1="180" x2="1000" y2="100" stroke="#C42472" stroke-width="0.5" opacity="0.08"/>
-        <line x1="1000" y1="100" x2="1100" y2="250" stroke="#C42472" stroke-width="0.5" opacity="0.06"/>
-        <line x1="100" y1="150" x2="150" y2="400" stroke="#C42472" stroke-width="0.5" opacity="0.05"/>
-        <line x1="800" y1="180" x2="900" y2="350" stroke="#C42472" stroke-width="0.5" opacity="0.05"/>
-        <!-- Icono IA / cerebro digital -->
-        <g transform="translate(980, 580)" opacity="0.06">
-          <rect x="0" y="20" width="60" height="40" rx="8" fill="none" stroke="#C42472" stroke-width="1.5"/>
-          <line x1="15" y1="20" x2="15" y2="10" stroke="#C42472" stroke-width="1.5"/>
-          <line x1="30" y1="20" x2="30" y2="5" stroke="#C42472" stroke-width="1.5"/>
-          <line x1="45" y1="20" x2="45" y2="10" stroke="#C42472" stroke-width="1.5"/>
-          <line x1="15" y1="60" x2="15" y2="70" stroke="#C42472" stroke-width="1.5"/>
-          <line x1="30" y1="60" x2="30" y2="75" stroke="#C42472" stroke-width="1.5"/>
-          <line x1="45" y1="60" x2="45" y2="70" stroke="#C42472" stroke-width="1.5"/>
-          <circle cx="22" cy="38" r="4" fill="#C42472"/>
-          <circle cx="38" cy="32" r="3" fill="#C42472"/>
+      <!-- Gradiente de fondo -->
+      <div class="hero-bg-gradient"></div>
+
+      <!-- Canvas de particulas tecnologicas -->
+      <svg class="hero-bg-svg" viewBox="0 0 1400 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+
+        <!-- GRID TECNOLOGICO -->
+        <defs>
+          <pattern id="tech-grid" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+            <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#C42472" stroke-width="0.3" opacity="0.08"/>
+          </pattern>
+          <radialGradient id="glow-center" cx="50%" cy="40%" r="50%">
+            <stop offset="0%" stop-color="#C42472" stop-opacity="0.08"/>
+            <stop offset="100%" stop-color="#C42472" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- Grid base -->
+        <rect width="1400" height="900" fill="url(#tech-grid)"/>
+        <!-- Glow central -->
+        <rect width="1400" height="900" fill="url(#glow-center)"/>
+
+        <!-- NODOS DE RED NEURONAL -->
+        <g class="network-nodes">
+          <!-- Nodos principales -->
+          <circle cx="120" cy="180" r="5" fill="#C42472" opacity="0.25" class="node-pulse"/>
+          <circle cx="320" cy="90" r="3" fill="#C42472" opacity="0.18"/>
+          <circle cx="520" cy="220" r="6" fill="#C42472" opacity="0.2" class="node-pulse"/>
+          <circle cx="750" cy="70" r="4" fill="#C42472" opacity="0.15"/>
+          <circle cx="950" cy="200" r="5" fill="#C42472" opacity="0.2" class="node-pulse"/>
+          <circle cx="1150" cy="120" r="3" fill="#C42472" opacity="0.15"/>
+          <circle cx="1300" cy="280" r="6" fill="#C42472" opacity="0.18"/>
+          <circle cx="180" cy="450" r="4" fill="#C42472" opacity="0.15"/>
+          <circle cx="420" cy="520" r="3" fill="#C42472" opacity="0.12"/>
+          <circle cx="680" cy="480" r="5" fill="#C42472" opacity="0.18" class="node-pulse"/>
+          <circle cx="880" cy="550" r="3" fill="#C42472" opacity="0.12"/>
+          <circle cx="1100" cy="420" r="4" fill="#C42472" opacity="0.15"/>
+          <circle cx="1350" cy="500" r="3" fill="#C42472" opacity="0.1"/>
+          <!-- Nodos secundarios pequenos -->
+          <circle cx="230" cy="300" r="2" fill="#C42472" opacity="0.12"/>
+          <circle cx="600" cy="350" r="2" fill="#C42472" opacity="0.1"/>
+          <circle cx="820" cy="320" r="2" fill="#C42472" opacity="0.12"/>
+          <circle cx="1020" cy="380" r="2" fill="#C42472" opacity="0.1"/>
         </g>
-        <!-- Icono smartphone -->
-        <g transform="translate(60, 550)" opacity="0.06">
-          <rect x="0" y="0" width="30" height="52" rx="5" fill="none" stroke="#C42472" stroke-width="1.5"/>
-          <line x1="10" y1="46" x2="20" y2="46" stroke="#C42472" stroke-width="1.5"/>
-          <rect x="5" y="8" width="20" height="30" rx="2" fill="#C42472" opacity="0.3"/>
+
+        <!-- LINEAS DE CONEXION -->
+        <g opacity="0.12" stroke="#C42472" stroke-width="0.8" fill="none">
+          <line x1="120" y1="180" x2="320" y2="90"/>
+          <line x1="320" y1="90" x2="520" y2="220"/>
+          <line x1="520" y1="220" x2="750" y2="70"/>
+          <line x1="750" y1="70" x2="950" y2="200"/>
+          <line x1="950" y1="200" x2="1150" y2="120"/>
+          <line x1="1150" y1="120" x2="1300" y2="280"/>
+          <line x1="120" y1="180" x2="180" y2="450"/>
+          <line x1="180" y1="450" x2="420" y2="520"/>
+          <line x1="420" y1="520" x2="680" y2="480"/>
+          <line x1="680" y1="480" x2="880" y2="550"/>
+          <line x1="880" y1="550" x2="1100" y2="420"/>
+          <line x1="1100" y1="420" x2="1350" y2="500"/>
+          <line x1="520" y1="220" x2="420" y2="520"/>
+          <line x1="750" y1="70" x2="680" y2="480"/>
+          <line x1="950" y1="200" x2="880" y2="550"/>
+          <line x1="1300" y1="280" x2="1350" y2="500"/>
+          <line x1="230" y1="300" x2="120" y2="180" opacity="0.6"/>
+          <line x1="230" y1="300" x2="320" y2="90" opacity="0.6"/>
+          <line x1="600" y1="350" x2="520" y2="220" opacity="0.6"/>
+          <line x1="600" y1="350" x2="680" y2="480" opacity="0.6"/>
+          <line x1="820" y1="320" x2="950" y2="200" opacity="0.6"/>
+          <line x1="1020" y1="380" x2="1100" y2="420" opacity="0.6"/>
         </g>
-        <!-- Icono grafica / analytics -->
-        <g transform="translate(500, 650)" opacity="0.05">
-          <line x1="0" y1="40" x2="80" y2="40" stroke="#C42472" stroke-width="1.5"/>
-          <line x1="0" y1="40" x2="0" y2="0" stroke="#C42472" stroke-width="1.5"/>
-          <polyline points="10,30 25,15 40,25 55,5 70,18" fill="none" stroke="#C42472" stroke-width="1.5"/>
-          <circle cx="10" cy="30" r="2" fill="#C42472"/>
-          <circle cx="25" cy="15" r="2" fill="#C42472"/>
-          <circle cx="40" cy="25" r="2" fill="#C42472"/>
-          <circle cx="55" cy="5" r="2" fill="#C42472"/>
-          <circle cx="70" cy="18" r="2" fill="#C42472"/>
+
+        <!-- ICONO IA / CHIP -->
+        <g transform="translate(1180, 580)" opacity="0.1">
+          <rect x="0" y="0" width="80" height="80" rx="12" fill="none" stroke="#C42472" stroke-width="1.5"/>
+          <rect x="15" y="15" width="50" height="50" rx="6" fill="none" stroke="#C42472" stroke-width="1"/>
+          <!-- Pines del chip -->
+          <line x1="20" y1="0" x2="20" y2="-12" stroke="#C42472" stroke-width="1.5"/>
+          <line x1="40" y1="0" x2="40" y2="-12" stroke="#C42472" stroke-width="1.5"/>
+          <line x1="60" y1="0" x2="60" y2="-12" stroke="#C42472" stroke-width="1.5"/>
+          <line x1="20" y1="80" x2="20" y2="92" stroke="#C42472" stroke-width="1.5"/>
+          <line x1="40" y1="80" x2="40" y2="92" stroke="#C42472" stroke-width="1.5"/>
+          <line x1="60" y1="80" x2="60" y2="92" stroke="#C42472" stroke-width="1.5"/>
+          <line x1="0" y1="20" x2="-12" y2="20" stroke="#C42472" stroke-width="1.5"/>
+          <line x1="0" y1="40" x2="-12" y2="40" stroke="#C42472" stroke-width="1.5"/>
+          <line x1="0" y1="60" x2="-12" y2="60" stroke="#C42472" stroke-width="1.5"/>
+          <line x1="80" y1="20" x2="92" y2="20" stroke="#C42472" stroke-width="1.5"/>
+          <line x1="80" y1="40" x2="92" y2="40" stroke="#C42472" stroke-width="1.5"/>
+          <line x1="80" y1="60" x2="92" y2="60" stroke="#C42472" stroke-width="1.5"/>
+          <!-- AI text -->
+          <text x="28" y="46" font-family="monospace" font-size="14" fill="#C42472" font-weight="bold">AI</text>
         </g>
-        <!-- Icono Instagram -->
-        <g transform="translate(200, 620)" opacity="0.05">
-          <rect x="0" y="0" width="44" height="44" rx="12" fill="none" stroke="#C42472" stroke-width="1.5"/>
-          <circle cx="22" cy="22" r="10" fill="none" stroke="#C42472" stroke-width="1.5"/>
-          <circle cx="33" cy="11" r="2.5" fill="#C42472"/>
+
+        <!-- ICONO INSTAGRAM -->
+        <g transform="translate(60, 600)" opacity="0.1">
+          <rect x="0" y="0" width="56" height="56" rx="16" fill="none" stroke="#C42472" stroke-width="1.5"/>
+          <circle cx="28" cy="28" r="12" fill="none" stroke="#C42472" stroke-width="1.5"/>
+          <circle cx="28" cy="28" r="5" fill="#C42472" opacity="0.4"/>
+          <circle cx="41" cy="15" r="3" fill="#C42472"/>
         </g>
-        <!-- Texto codigo sutil -->
-        <text x="850" y="680" font-family="monospace" font-size="10" fill="#C42472" opacity="0.05">{ AI: true }</text>
-        <text x="120" y="700" font-family="monospace" font-size="8" fill="#C42472" opacity="0.04">prompt.execute()</text>
-        <text x="600" y="720" font-family="monospace" font-size="9" fill="#C42472" opacity="0.04">model.connect()</text>
-        <!-- Circulo decorativo grande -->
-        <circle cx="1150" cy="650" r="200" fill="none" stroke="#C42472" stroke-width="0.5" opacity="0.04"/>
-        <circle cx="50" cy="700" r="150" fill="none" stroke="#C42472" stroke-width="0.5" opacity="0.04"/>
+
+        <!-- ICONO TIKTOK -->
+        <g transform="translate(140, 610)" opacity="0.09">
+          <text x="0" y="40" font-family="Arial" font-size="44" fill="#C42472" font-weight="bold">&#9834;</text>
+        </g>
+
+        <!-- ICONO SMARTPHONE CON REDES -->
+        <g transform="translate(80, 700)" opacity="0.08">
+          <rect x="0" y="0" width="36" height="62" rx="6" fill="none" stroke="#C42472" stroke-width="1.5"/>
+          <rect x="5" y="8" width="26" height="38" rx="2" fill="#C42472" opacity="0.15"/>
+          <line x1="12" y1="52" x2="24" y2="52" stroke="#C42472" stroke-width="1.5"/>
+          <!-- Mini grafica en pantalla -->
+          <polyline points="8,35 14,22 20,28 26,16" fill="none" stroke="#C42472" stroke-width="1" opacity="0.6"/>
+        </g>
+
+        <!-- ICONO ANALYTICS / GRAFICA -->
+        <g transform="translate(1250, 720)" opacity="0.09">
+          <line x1="0" y1="60" x2="100" y2="60" stroke="#C42472" stroke-width="1.5"/>
+          <line x1="0" y1="60" x2="0" y2="0" stroke="#C42472" stroke-width="1.5"/>
+          <rect x="10" y="30" width="18" height="30" fill="#C42472" opacity="0.3" rx="2"/>
+          <rect x="36" y="15" width="18" height="45" fill="#C42472" opacity="0.4" rx="2"/>
+          <rect x="62" y="22" width="18" height="38" fill="#C42472" opacity="0.3" rx="2"/>
+        </g>
+
+        <!-- ICONO CEREBRO / IA NEURONAL -->
+        <g transform="translate(600, 720)" opacity="0.07">
+          <ellipse cx="40" cy="35" rx="35" ry="30" fill="none" stroke="#C42472" stroke-width="1.5"/>
+          <line x1="40" y1="5" x2="40" y2="65" stroke="#C42472" stroke-width="1" opacity="0.5"/>
+          <path d="M 15 25 Q 25 15 35 25 Q 45 15 55 25" fill="none" stroke="#C42472" stroke-width="1"/>
+          <path d="M 10 40 Q 20 30 30 40 Q 40 30 50 40 Q 60 30 70 40" fill="none" stroke="#C42472" stroke-width="1"/>
+          <circle cx="20" cy="25" r="2" fill="#C42472" opacity="0.5"/>
+          <circle cx="40" cy="18" r="2" fill="#C42472" opacity="0.5"/>
+          <circle cx="60" cy="25" r="2" fill="#C42472" opacity="0.5"/>
+        </g>
+
+        <!-- CODIGO FLOTANTE -->
+        <text x="900" y="780" font-family="monospace" font-size="11" fill="#C42472" opacity="0.07">{ prompt: "lanzar mi marca" }</text>
+        <text x="150" y="800" font-family="monospace" font-size="9" fill="#C42472" opacity="0.06">AI.generate(brandStrategy)</text>
+        <text x="450" y="850" font-family="monospace" font-size="10" fill="#C42472" opacity="0.06">model.connect(audience)</text>
+        <text x="1050" y="820" font-family="monospace" font-size="9" fill="#C42472" opacity="0.05">output: {bio, logo, name}</text>
+
+        <!-- CIRCULOS DECORATIVOS GRANDES -->
+        <circle cx="1380" cy="800" r="280" fill="none" stroke="#C42472" stroke-width="0.5" opacity="0.05"/>
+        <circle cx="1380" cy="800" r="200" fill="none" stroke="#C42472" stroke-width="0.5" opacity="0.04"/>
+        <circle cx="30" cy="850" r="200" fill="none" stroke="#C42472" stroke-width="0.5" opacity="0.05"/>
+
       </svg>
     </div>
     <div class="container">
