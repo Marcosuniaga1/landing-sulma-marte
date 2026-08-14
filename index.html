@@ -812,25 +812,17 @@
     }
 
     function submitToSheets(nombre, correo, whatsapp, onSuccess, onError) {
-      var formData = new FormData();
-      formData.append("nombre", nombre);
-      formData.append("correo", correo);
-      formData.append("whatsapp", whatsapp);
+      var url = APPS_SCRIPT_URL
+        + "?nombre=" + encodeURIComponent(nombre)
+        + "&correo=" + encodeURIComponent(correo)
+        + "&whatsapp=" + encodeURIComponent(whatsapp);
 
-      fetch(APPS_SCRIPT_URL, {
-        method: "POST",
-        body: formData
-      })
-      .then(function() {
-        onSuccess();
-      })
-      .catch(function() {
-        onSuccess();
-      });
+      var img = new Image();
+      img.src = url;
 
       setTimeout(function() {
         onSuccess();
-      }, 3000);
+      }, 2500);
     }
 
     function handleSubmit(form, prefix) {
